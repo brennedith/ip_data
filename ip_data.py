@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import os
 import sys
 picdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'pic')

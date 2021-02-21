@@ -19,7 +19,7 @@ sudo pip3 install RPi.GPIO spidev
 python3 ip_data.py
 
 # To schedule a cron job for the script, paste the result on crontab
-echo "5 * * * * python3 $PWD/ip_data.py"
+echo "5 * * * * $PWD/ip_data.py >> ~/cron.log 2>&1"
 
 crontab -e
 ```
