@@ -39,10 +39,11 @@ try:
     epd.Clear()
     time.sleep(1)
 
-    Font25 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 25)
-    Font20 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 20)
-    Font15 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 15)
-    Font12 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 12)
+    #FontFile = os.path.join(picdir, 'Font.ttc')
+    FontFile = '/usr/share/fonts/truetype/msttcorefonts/Arial.ttf'
+    Font25 = ImageFont.truetype(FontFile, 25)
+    Font20 = ImageFont.truetype(FontFile, 20)
+    Font15 = ImageFont.truetype(FontFile, 15)
 
     CanvasBlack = Image.new('1', (epd.height, epd.width), 255)  # 298*126
     CanvasRed = Image.new('1', (epd.height, epd.width), 255)  # 298*126
@@ -59,7 +60,7 @@ try:
     drawBlack.text((5, 5), ip, font = Font25, fill = 0)
     drawRed.text((5, 40), city, font = Font20, fill = 0)
     drawRed.text((5, 60), country, font = Font15, fill = 0)
-    drawBlack.text((90, 90), current_time, font = Font12, fill = 0)
+    drawBlack.text((70, 85), current_time, font = Font15, fill = 0)
 
     epd.display(epd.getbuffer(CanvasBlack.rotate(180)), epd.getbuffer(CanvasRed.rotate(180)))
     epd.sleep()
@@ -68,7 +69,7 @@ try:
 except IOError as e:
     logging.info(e)
 
-except KeyboardInterrupt:    
+except KeyboardInterrupt:
     logging.info("ctrl + c:")
     epd2in13bc.epdconfig.module_exit()
     exit()

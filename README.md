@@ -18,8 +18,8 @@ sudo pip3 install RPi.GPIO spidev
 # Run script manually
 python3 ip_data.py
 
-# To schedule a cron job for the script, paste the result on crontab
-echo "5 * * * * $PWD/ip_data.py >> ~/cron.log 2>&1"
+# Schedule a cron job every 30th min from 7am to 10pm
+echo "*/30 7-22 * * * $PWD/ip_data.py >> ~/cron.log 2>&1"
 
-crontab -e
+crontab -e # Paste result here
 ```
