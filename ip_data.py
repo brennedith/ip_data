@@ -14,15 +14,19 @@ from datetime import datetime
 from PIL import Image, ImageDraw, ImageFont
 from waveshare_epd import epd2in13bc
 
+logging.basicConfig(level=logging.DEBUG)
+
 # IP Data Logic
 def ip_data():
-    ip_data_provider = 'https://api.ip.sb/geoip'
+    ip_data_provider = 'https://api-ipv4.ip.sb/geoip'
+    interface = 'wlan0'
     cmd = ' '.join([
         'curl',
         '--silent',
         '--show-error',
         # OpenVPN interface
-        '--interface tun0',
+        '--interface',
+        interface,
         ip_data_provider
     ])
 
