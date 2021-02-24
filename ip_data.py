@@ -19,6 +19,7 @@ logging.basicConfig(level=logging.DEBUG)
 # IP Data Logic
 def ip_data():
     ip_data_provider = 'https://api-ipv4.ip.sb/geoip'
+    #interface = 'eth0'
     interface = 'wlan0'
     cmd = ' '.join([
         'curl',
@@ -44,7 +45,8 @@ try:
     time.sleep(1)
 
     #FontFile = os.path.join(picdir, 'Font.ttc')
-    FontFile = '/usr/share/fonts/truetype/msttcorefonts/Arial.ttf'
+    #FontFile = '/usr/share/fonts/truetype/msttcorefonts/Arial.ttf'
+    FontFile = '/usr/share/fonts/truetype/ubuntu/Ubuntu-R.ttf'
     Font25 = ImageFont.truetype(FontFile, 25)
     Font20 = ImageFont.truetype(FontFile, 20)
     Font15 = ImageFont.truetype(FontFile, 15)
