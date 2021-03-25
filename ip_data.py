@@ -17,19 +17,13 @@ from waveshare_epd import epd2in13bc
 logging.basicConfig(level=logging.DEBUG)
 
 # IP Data Logic
-def ip_data():
+def ip_data(tool = 'wget'):
     ip_data_provider = 'https://api-ipv4.ip.sb/geoip'
-    #interface = 'eth0'
-    interface = 'wlan0'
-    cmd = ' '.join([
-        'curl',
-        '--silent',
-        '--show-error',
-        # OpenVPN interface
-        '--interface',
-        interface,
-        ip_data_provider
-    ])
+
+    curlCmd = ' '.join(['curl', '--silent', '--show-error', ip_data_provider])
+    wgetCmd = ' '.join(['wget', '-q', '-O-', ip_data_provider])
+
+    cmd = curlCmd if tool == 'curl' else wgetCmd 
 
     ip_data_request = os.popen(cmd)
     ip_data_response = ip_data_request.read()
@@ -38,14 +32,21 @@ def ip_data():
     return ip_data_json
 
 try:
+    now = datetime.now()
+    current_time = now.strftime("%m/%d/%Y, %H:%M:%S")
+    ip_info = ip_data()
+    city = ip_info['city']
+    country = ip_info['country']
+    ip = ip_info['ip']
+
+    print(current_time, city, country, ip)
+
     epd = epd2in13bc.EPD()
     logging.info("init and clear screen")
     epd.init()
     epd.Clear()
     time.sleep(1)
 
-    #FontFile = os.path.join(picdir, 'Font.ttc')
-    #FontFile = '/usr/share/fonts/truetype/msttcorefonts/Arial.ttf'
     FontFile = '/usr/share/fonts/truetype/ubuntu/Ubuntu-R.ttf'
     Font25 = ImageFont.truetype(FontFile, 25)
     Font20 = ImageFont.truetype(FontFile, 20)
@@ -55,13 +56,6 @@ try:
     CanvasRed = Image.new('1', (epd.height, epd.width), 255)  # 298*126
     drawBlack = ImageDraw.Draw(CanvasBlack)
     drawRed = ImageDraw.Draw(CanvasRed)
-
-    now = datetime.now()
-    current_time = now.strftime("%m/%d/%Y, %H:%M:%S")
-    ip_info = ip_data()
-    city = ip_info['city']
-    country = ip_info['country']
-    ip = ip_info['ip']
 
     drawBlack.text((5, 5), ip, font = Font25, fill = 0)
     drawRed.text((5, 40), city, font = Font20, fill = 0)
