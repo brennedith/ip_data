@@ -2,34 +2,37 @@
 
 import os
 import sys
-picdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'pic')
+import requests
+import time
+import logging
+from datetime import datetime
+from PIL import Image, ImageDraw, ImageFont
+
+# Load e-ink screen lib
 libdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')
 if os.path.exists(libdir):
     sys.path.append(libdir)
 
-import time
-import json
-import logging
-from datetime import datetime
-from PIL import Image, ImageDraw, ImageFont
-from waveshare_epd import epd2in13bc
+    from waveshare_epd import epd2in13bc
 
+# picdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'pic')
 logging.basicConfig(level=logging.DEBUG)
 
 # IP Data Logic
-def ip_data(tool = 'wget'):
-    ip_data_provider = 'https://api-ipv4.ip.sb/geoip'
+def ip_data():
+    url = 'https://api-ipv4.ip.sb/geoip'
 
-    curlCmd = ' '.join(['curl', '--silent', '--show-error', ip_data_provider])
-    wgetCmd = ' '.join(['wget', '-q', '-O-', ip_data_provider])
+    # Required to prevent 403 responses
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+    }
 
-    cmd = curlCmd if tool == 'curl' else wgetCmd 
+    response = requests.get(url, headers=headers)
 
-    ip_data_request = os.popen(cmd)
-    ip_data_response = ip_data_request.read()
-    ip_data_json = json.loads(ip_data_response)
-
-    return ip_data_json
+    if response.status_code == 200:
+        return response.json()
+    else:
+        raise ValueError(f"Error: {response.status_code} - {response.reason}")
 
 try:
     now = datetime.now()

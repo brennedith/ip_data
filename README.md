@@ -1,6 +1,7 @@
 # Pre-requisites
 
 1. Enable required Raspberry Pi interfaces:
+
 - SPI
 - I2C
 
@@ -18,8 +19,6 @@ sudo pip3 install RPi.GPIO spidev
 # Run script manually
 python3 ip_data.py
 
-# Schedule a cron job every 30th min from 7am to 10pm
-echo "*/30 7-22 * * * $PWD/ip_data.py >> ~/cron.log 2>&1"
-
-crontab -e # Paste result here
+# Schedule a cron job every 5th min from 7am to 10pm
+sudo sh -c 'echo "*/5 7-22 * * * $PWD/ip_data.py >> ~/cron.log 2>&1\n" >> /etc/crontab'
 ```
