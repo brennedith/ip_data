@@ -19,6 +19,7 @@ sudo pip3 install RPi.GPIO spidev
 # Run script manually
 python3 ip_data.py
 
-# Schedule a cron job every 5th min from 7am to 10pm
-sudo sh -c 'echo "*/5 7-22 * * * $PWD/ip_data.py >> ~/cron.log 2>&1\n" >> /etc/crontab'
+# Schedule a cron job (at user level) every 5th min from 7am to 10pm
+(crontab -l; echo "*/5 7-22 * * * $PWD/ip_data.py >> ~/cron.log 2>&1\n") | sort -u | crontab -
+
 ```
